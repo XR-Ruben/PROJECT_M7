@@ -29,37 +29,6 @@ class Comuna(models.Model):
         return f'{self.nombre} ({self.cod})'      
 
 
-# class Region(models.Model):
-#     nombre_region = models.CharField(max_length=100)
-
-#     def __str__(self):
-#         return self.nombre_region
-
-# class Comuna(models.Model):
-#     nombre_comuna = models.CharField(max_length=100)
-#     id_region = models.ForeignKey(Region, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.nombre_comuna
-
-# class TipoUser(models.Model):
-#     nombre_tipo_usuario = models.CharField(max_length=100)
-
-#     def __str__(self):
-#         return self.nombre_tipo_usuario
-
-# class User(models.Model):
-#     nombre = models.CharField(max_length=100)
-#     apellido = models.CharField(max_length=100)
-#     rut = models.CharField(max_length=12, unique=True)
-#     direccion = models.CharField(max_length=255)
-#     telefono = models.CharField(max_length=15)
-#     correo = models.EmailField(unique=True)
-#     tipo_usuario = models.ForeignKey(TipoUser, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return f"{self.nombre} {self.apellido}"
-
 class Inmueble(models.Model):
     TIPOS = (('casa', 'Casa'), ('departamento', 'Departamento'), ('bodega', 'Bodega'), ('parcela', 'Parcela'))
     nombre = models.CharField(max_length=50)
@@ -79,28 +48,6 @@ class Inmueble(models.Model):
     comuna = models.ForeignKey(Comuna, related_name='inmuebles', on_delete=models.RESTRICT)
     arrendador = models.ForeignKey(User, related_name='inmuebles', on_delete=models.RESTRICT)
     #* arrendador - propietario es un USER de de tipo rol 'arrendador' en el UserProfile
-    # estado = models.CharField(max_length=255, choices=ESTADO) # <- 'nuevo', 'estrenar', 'viejo'
-    # arrendador
-
-# class Inmueble(models.Model):
-#     nombre = models.CharField(max_length=100)
-#     descripcion = models.TextField()
-#     m2_construidos = models.DecimalField(max_digits=10, decimal_places=2)
-#     m2_terreno = models.DecimalField(max_digits=10, decimal_places=2)
-#     numero_estacionamientos = models.IntegerField()
-#     numero_baños = models.IntegerField()
-#     numero_habitaciones = models.IntegerField()
-#     direccion = models.CharField(max_length=255)
-#     cod_comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
-#     cod_region = models.ForeignKey(Region, on_delete=models.CASCADE)
-#     tipo_inmueble = models.CharField(max_length=100)
-#     precio_mensual = models.DecimalField(max_digits=10, decimal_places=2)
-#     estado = models.CharField(max_length=50)
-#     arrendatario = models.ForeignKey(User, related_name='solicitudes_arrendatario', on_delete=models.CASCADE)
-#     disponible = models.BooleanField(default=True)
-
-#     def __str__(self):
-#         return self.nombre
     
     
 class Solicitud(models.Model):
