@@ -1,9 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ARRIENDA.COM</title>
-  </head>
-  <body></body>
-</html>
+{% extends 'base.html' %} {% block content %}
+<h2>Página Web de Arriendos de Inmuebles</h2>
+<div class="container mt-5">
+  <div class="row">
+    {% for i in inmuebles %}
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <img
+          src="https://definicion.de/wp-content/uploads/2010/12/casa.jpg"
+          class="card-img-top"
+          alt="Imagen de inmueble"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ i.nombre }}</h5>
+          <p class="card-text">{{ i.descripcion }}</p>
+          <p class="card-text">{{ i.comuna.nombre }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% endblock %}
+  </div>
+</div>
