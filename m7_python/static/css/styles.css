@@ -5,3 +5,11 @@ body{
 /* header{
     background-color: brown;
 } */
+
+
+/* Mensaje de error */
+.alert-error {
+    color: #58151c;
+    background-color: #f8d7da;
+    border-color: #f1aeb5;
+}

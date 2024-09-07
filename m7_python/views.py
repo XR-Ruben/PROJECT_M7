@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .services import get_all_inmuebles
 from django.contrib import messages
 from django.views import View
+from m7_python.services import crear_usuario
 
 # Create your views here.
 def indexView(request):

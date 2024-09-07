@@ -1,15 +1,31 @@
-from .models import User, Region, Comuna, Inmueble, Solicitud
+from django.contrib.auth.models import User
+from .models import UserProfile, Region, Comuna, Inmueble, Solicitud
 
 # Crear un objeto con el modelo:
-def create_user(new_user):
+
+def crear_usuario(username:str, first_name:str, last_name:str, email:str, password:str) -> bool:
     user = User.objects.create_user(
-        username=new_user['username'],
-        email=new_user['email'],
-        first_name=new_user['first_name'],
-        last_name=new_user['last_name'],
-        password=new_user['password']
-    )
-    return user
+        username,
+        email,
+        password,
+        first_name=first_name,
+        last_name=last_name
+        )
+    UserProfile.objects.create(
+        tipo='arrendatario', 
+        user=user
+        )
+    return True
+
+# def create_user(new_user):
+#     user = User.objects.create_user(
+#         username=new_user['username'],
+#         email=new_user['email'],
+#         first_name=new_user['first_name'],
+#         last_name=new_user['last_name'],
+#         password=new_user['password']
+#     )
+#     return user
 
 # Crear una Región:
 def create_region(cod, nombre): 
@@ -133,6 +149,23 @@ def eliminar_inmueble(id_inmueble):
             "success": False,
             "message": f"Error al eliminar el inmueble: {str(e)}"
         }
+        
+        
+
+def crear_usuario(username:str, first_name:str, last_name:str, email:str, password:str) -> bool:
+    user = User.objects.create_user(
+        username,
+        email,
+        password,
+        first_name=first_name,
+        last_name=last_name
+        )
+    UserProfile.objects.create(
+        tipo='cliente', 
+        user=user
+        )
+    return True
+        
 
 # # Crear una Solicitud:
 
