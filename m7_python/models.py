@@ -58,7 +58,23 @@ class Solicitud(models.Model):
     estado = models.CharField(max_length=50, choices=ESTADOS, default='pendiente')
     
     
+
+# class ContactForm(models.Model):
+#     contact_form_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+#     customer_email = models.EmailField()
+#     customer_name = models.CharField(max_length=64)
+#     message = models.TextField()
     
+# def __str__(self):
+#     return self.customer_name
+
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE) # -> asocición - relación
+#     bio = models.TextField(max_length=500, blank=True) # el campo puede estar vacío
+#     location = models.CharField(max_length=30, blank=True)
+#     birth_date = models.DateField(null=True, blank=True) # generalmente YYYY-MM-DD (por ejemplo, 2024-08-17).
+#     def __str__(self):
+#         return self.user.username   
     """
 c. Operaciones CRUD con Django ORM
 Crear un objeto con el modelo:

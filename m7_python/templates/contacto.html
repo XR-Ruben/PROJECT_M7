@@ -1,0 +1,18 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="container">
+  <div class="col-12 col-md-2 offset-0 offset-md-4 mt-4 mb-4">
+    <h3 class="text-center">Contáctanos</h3>
+    <div>
+      <form action="/contacto" method="post">
+        {% csrf_token %}
+
+        {{form}}
+        <div class="text-center col-md-2 offset-md-4 mt-4 mb-4">
+          <input type="submit" value="submit" class="btn btn-primary" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
