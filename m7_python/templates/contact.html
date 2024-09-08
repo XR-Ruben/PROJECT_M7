@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container">
+  <h1>Contacto</h1>
+  <p class="mb-4">
+    Puedes escribirnos en caso que tengas cualquier duda o requerimiento.
+  </p>
+  <div class="row">
+    <div class="col-6">
+      <form action="{% url 'contact' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col">{{ form.nombre.label_tag }} {{ form.nombre }}</div>
+          <div class="col">{{ form.email.label_tag }} {{ form.email}}</div>
+          <div class="my-3">
+            {{ form.mensaje.label_tag }} {{ form.mensaje }}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

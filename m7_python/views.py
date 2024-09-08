@@ -3,6 +3,7 @@ from .services import get_all_inmuebles
 from django.contrib import messages
 from django.views import View
 from m7_python.services import crear_usuario
+from m7_python.forms import ContactModelForm
 
 # Create your views here.
 def indexView(request):
@@ -41,3 +42,25 @@ class RegisterView(View):
     def get(self, request):
         return render(request, 'registration/register.html')
     
+
+class ContactView(View):
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+    def get(self, request):
+        form = ContactModelForm()                    
+        context = {'form': form}               
+        return render(request, 'contact.html', context)
+    
+    def post(self, request):
+        form = ContactModelForm(request.POST)        
+        if form.is_valid():                     
+            form.save()
+            messages.success(request, 'Mensaje enviado con éxito')                                  
+            return redirect('index')         
+        context = {
+	    'form': form
+	    } 
+        messages.error(request, 'No se ha podido enviar el mensaje')               
+        return render(request, 'contact.html', context) 

@@ -58,6 +58,15 @@ class Solicitud(models.Model):
     estado = models.CharField(max_length=50, choices=ESTADOS, default='pendiente')
     
     
+class Contact(models.Model):
+	nombre = models.CharField(max_length=100)
+	email = models.CharField(max_length=100)
+	mensaje = models.CharField(max_length=500)
+		  
+	def __str__(self):
+		name = self.nombre
+		message = self.mensaje
+		return f'{name} : {message}'
 
 # class ContactForm(models.Model):
 #     contact_form_uuid = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -75,48 +84,48 @@ class Solicitud(models.Model):
 #     birth_date = models.DateField(null=True, blank=True) # generalmente YYYY-MM-DD (por ejemplo, 2024-08-17).
 #     def __str__(self):
 #         return self.user.username   
-    """
-c. Operaciones CRUD con Django ORM
-Crear un objeto con el modelo:
+# """
+# c. Operaciones CRUD con Django ORM
+# Crear un objeto con el modelo:
 
-nuevo_inmueble = Inmueble(
-    nombre="Casa en el centro",
-    descripcion="Hermosa casa de 3 habitaciones en el centro de la ciudad.",
-    m2_construidos=120.50,
-    m2_terreno=150.00,
-    numero_estacionamientos=2,
-    numero_baños=2,
-    numero_habitaciones=3,
-    direccion="Calle Principal 123",
-    id_comuna=Comuna.objects.get(id_comuna=1),
-    id_region=Region.objects.get(id_region=1),
-    tipo_inmueble="Casa",
-    precio_mensual=750.00,
-    estado="Disponible",
-    id_user=User.objects.get(id_user=1)
-)
-nuevo_inmueble.save()
-
-
-Enlistar desde el modelo de datos:
-
-inmuebles = Inmueble.objects.all()
-for inmueble in inmuebles:
-    print(inmueble.nombre, inmueble.precio_mensual)
+# nuevo_inmueble = Inmueble(
+#     nombre="Casa en el centro",
+#     descripcion="Hermosa casa de 3 habitaciones en el centro de la ciudad.",
+#     m2_construidos=120.50,
+#     m2_terreno=150.00,
+#     numero_estacionamientos=2,
+#     numero_baños=2,
+#     numero_habitaciones=3,
+#     direccion="Calle Principal 123",
+#     id_comuna=Comuna.objects.get(id_comuna=1),
+#     id_region=Region.objects.get(id_region=1),
+#     tipo_inmueble="Casa",
+#     precio_mensual=750.00,
+#     estado="Disponible",
+#     id_user=User.objects.get(id_user=1)
+# )
+# nuevo_inmueble.save()
 
 
-Actualizar un registro en el modelo de datos:
+# Enlistar desde el modelo de datos:
 
-inmueble = Inmueble.objects.get(id_inmueble=1)
-inmueble.precio_mensual = 800.00
-inmueble.save()
+# inmuebles = Inmueble.objects.all()
+# for inmueble in inmuebles:
+#     print(inmueble.nombre, inmueble.precio_mensual)
 
 
-Borrar un registro del modelo de datos:
+# Actualizar un registro en el modelo de datos:
 
-inmueble = Inmueble.objects.get(id_inmueble=1)
-inmueble.delete()
+# inmueble = Inmueble.objects.get(id_inmueble=1)
+# inmueble.precio_mensual = 800.00
+# inmueble.save()
+
+
+# Borrar un registro del modelo de datos:
+
+# inmueble = Inmueble.objects.get(id_inmueble=1)
+# inmueble.delete()
 
     
-    """
+# """
 

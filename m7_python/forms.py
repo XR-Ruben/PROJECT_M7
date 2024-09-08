@@ -1,8 +1,41 @@
-# from django import forms
-# from .models import ContactForm
+from django import forms
+from django.forms import ModelForm
+from m7_python.models import Contact
 # from django.contrib.auth.models import User
 # from .models import Profile
 # from django.contrib.auth.forms import UserCreationForm
+
+
+class ContactModelForm(ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['nombre', 'email', 'mensaje']
+        labels = {
+            'nombre': 'Nombre:',
+            'Email': 'email',
+            'mensaje': 'Mensaje'
+        }
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs= {
+                    'class': 'form-control',
+                    'placeholder': 'ej. Ruben Ramírez',
+                }
+            ),
+            'email': forms.EmailInput(
+                attrs= {
+                    'class': 'form-control',
+                    'placeholder': 'ej. ruben@mail.com'
+                }
+            ),
+            'mensaje': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 4,
+                    'placeholder': 'Máximo 500 carácteres'
+                }
+            )
+        }   
 
 
 # #*  --- apply ContactFormForm --- 
