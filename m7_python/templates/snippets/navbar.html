@@ -21,10 +21,10 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link1</a>
+          <a class="nav-link" href="#">Bienvenido</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link2</a>
+          <a class="nav-link" href="{% url 'about' %}">Acerca</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'contact' %}">Contacto</a>
@@ -57,6 +57,22 @@
           >
         </li>
         {% endif %}
+
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          {% if user.is_authenticated and user.user_profile.tipo == 'arrendador' %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              Crear Inmueble
+            </a>
+          </li>
+          {% endif %}
+          {% if user.is_authenticated and user.user_profile.tipo == 'arrendatario' %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              Ver Lista de Solicitudes
+            </a>
+          </li>
+          {% endif %}     
       </ul>
     </div>
   </div>

@@ -3,6 +3,20 @@ from .models import UserProfile, Region, Comuna, Inmueble, Solicitud
 
 # Crear un objeto con el modelo:
 
+
+def get_or_create_user_profile(user):
+    try:
+        # Intenta obtener el perfil del usuario o crearlo si no existe
+        user_profile, created = UserProfile.objects.get_or_create(user=user)
+        if created:
+            print("Se ha creado un nuevo perfil para el usuario.")
+        else:
+            print("El perfil ya existía.")
+        return user_profile
+    except Exception as e:
+        print(f'Error al obtener o crear el perfil del usuario. {e}')
+        return None
+
 def crear_usuario(username:str, first_name:str, last_name:str, email:str, password:str) -> bool:
     user = User.objects.create_user(
         username,
@@ -17,15 +31,6 @@ def crear_usuario(username:str, first_name:str, last_name:str, email:str, passwo
         )
     return True
 
-# def create_user(new_user):
-#     user = User.objects.create_user(
-#         username=new_user['username'],
-#         email=new_user['email'],
-#         first_name=new_user['first_name'],
-#         last_name=new_user['last_name'],
-#         password=new_user['password']
-#     )
-#     return user
 
 # Crear una Región:
 def create_region(cod, nombre): 
@@ -150,21 +155,9 @@ def eliminar_inmueble(id_inmueble):
             "message": f"Error al eliminar el inmueble: {str(e)}"
         }
         
-        
 
-def crear_usuario(username:str, first_name:str, last_name:str, email:str, password:str) -> bool:
-    user = User.objects.create_user(
-        username,
-        email,
-        password,
-        first_name=first_name,
-        last_name=last_name
-        )
-    UserProfile.objects.create(
-        tipo='cliente', 
-        user=user
-        )
-    return True
+    
+            
         
 
 # # Crear una Solicitud:

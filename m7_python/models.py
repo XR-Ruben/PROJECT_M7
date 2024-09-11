@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     telefono = models.CharField(max_length=15, null=True, blank=True)
     tipo = models.CharField(max_length=255, choices=tipos, default='arrendatario')
     def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name} ({self.rol})'
+        return f'{self.user.first_name} {self.user.last_name} ({self.tipo})'
     
 class Region(models.Model):
     cod = models.CharField(max_length=2, primary_key=True)
