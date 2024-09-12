@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from .services import get_all_inmuebles, get_or_create_user_profile
 from django.contrib import messages
 from django.views import View
-from m7_python.services import crear_usuario
-from m7_python.forms import ContactModelForm
+from m7_python.services import create_user
+from m7_python.forms import ContactModelForm, CustomUserCreationForm, UserEditProfileForm, UserForm, UserProfileForm
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -16,36 +16,50 @@ def indexView(request):
 
 
 
-class RegisterView(View):
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+# class RegisterView(View):
+#     def dispatch(self, *args, **kwargs):
+#         return super().dispatch(*args, **kwargs)
 
-    def post(self, request):
-        username = request.POST['first_name']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        email = request.POST['email']
-        password = request.POST['password']
-        password_repeat = request.POST['password_repeat']
-        # Validación del passoword ingresado
-        if password != password_repeat:
-            messages.error(request, 'Las contraseñas no coinciden')
-            return render(request, 'registration/register.html')
-        try:
-            crear_usuario(username, first_name, last_name, email, password)
-        except IntegrityError:
-            messages.error(request, 'El correo ya existe')
-            return render(request, 'registration/register.html')
-        except Exception:
-            messages.error(request, 'No se ha podido registrar el usuario')
-            return render(request, 'registration/register.html')
-        # Si llega aquí, es porque no hubo errores.
-        messages.success(request, '¡Usuario creado con éxito! Por favor, ingrese')
-        return redirect('registration/register_rol.html')
+#     def post(self, request):
+#         username = request.POST['first_name']
+#         first_name = request.POST['first_name']
+#         last_name = request.POST['last_name']
+#         email = request.POST['email']
+#         password = request.POST['password']
+#         password_repeat = request.POST['password_repeat']
+#         # Validación del passoword ingresado
+#         if password != password_repeat:
+#             messages.error(request, 'Las contraseñas no coinciden')
+#             return render(request, 'registration/register.html')
+#         try:
+#             crear_usuario(username, first_name, last_name, email, password)
+#         except IntegrityError:
+#             messages.error(request, 'El correo ya existe')
+#             return render(request, 'registration/register.html')
+#         except Exception:
+#             messages.error(request, 'No se ha podido registrar el usuario')
+#             return render(request, 'registration/register.html')
+#         # Si llega aquí, es porque no hubo errores.
+#         messages.success(request, '¡Usuario creado con éxito! Por favor, ingrese')
+#         return redirect('registration/register_rol.html')
 
-    def get(self, request):
-        return render(request, 'registration/register.html')
+#     def get(self, request):
+#         return render(request, 'registration/register.html')
     
+
+# STEP -> CREAR el FORM de Registro
+#TODO__ REGISTER and REGISTER_ROL (tipo de usuario) - FORMS
+def RegisterView(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('register_rol')
+    else:
+        form = CustomUserCreationForm()
+    return render(request,'registration/register.html',{'form':form} )
+
 
 class ContactView(View):
     def dispatch(self, *args, **kwargs):
@@ -86,18 +100,36 @@ def register_rol(request):
 @login_required
 def profile_view(request):
     user = request.user
-    # user_profile = get_or_create_user_profile(user)  # Llama al servicio para obtener o crear el perfil
+    user_profile = get_or_create_user_profile(user)  # Llama al servicio para obtener o crear el perfil
 
     if not user_profile:
         # En caso de que ocurra un error al obtener o crear el perfil
-        # return render(request, 'error.html', {'message': 'No se pudo obtener el perfil del usuario.'})
+         return render(request, 'error.html', {'message': 'No se pudo obtener el perfil del usuario.'})
 
-        return render(request, 'profile_detail.html', {
+    return render(request, 'profile_detail.html', {
         'user': user,
-        # 'profile': user_profile,
+         'profile': user_profile,
     })
 
 
+@login_required
+def edit_profile_view(request):
+    user = request.user 
+    user_profile = get_or_create_user_profile(user)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = UserEditProfileForm(request.POST, instance=user_profile) 
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('profile')
+    else: # GET
+        user_form = UserForm(instance=user) 
+        profile_form = UserEditProfileForm(instance=user_profile)
+    return render(request, 'profile_edit.html', {
+        'user_form': user_form,
+        'profile_form': profile_form,
+    })
 
 def about(request):
     return render(request, 'about.html', {})

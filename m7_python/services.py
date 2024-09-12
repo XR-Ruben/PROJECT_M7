@@ -16,20 +16,42 @@ def get_or_create_user_profile(user):
     except Exception as e:
         print(f'Error al obtener o crear el perfil del usuario. {e}')
         return None
-
-def crear_usuario(username:str, first_name:str, last_name:str, email:str, password:str) -> bool:
+    
+    
+def create_user(new_user):
     user = User.objects.create_user(
-        username,
-        email,
-        password,
+        username=new_user['username'],
+        email=new_user['email'],
+        first_name=new_user['first_name'],
+        last_name=new_user['last_name'],
+        password=new_user['password']
+    )
+    return user
+# create_user({username:"...", email: ... .... })
+
+def create_user_by_params(username,email,first_name,last_name,password):
+    user = User.objects.create_user(
+        username=username,
+        email=email,
         first_name=first_name,
-        last_name=last_name
-        )
-    UserProfile.objects.create(
-        tipo='arrendatario', 
-        user=user
-        )
-    return True
+        last_name=last_name,
+        password=password
+    )
+    return user    
+
+# def crear_usuario(username:str, first_name:str, last_name:str, email:str, password:str) -> bool:
+#     user = User.objects.create_user(
+#         username,
+#         email,
+#         password,
+#         first_name=first_name,
+#         last_name=last_name
+#         )
+#     UserProfile.objects.create(
+#         tipo='arrendatario', 
+#         user=user
+#         )
+#     return True
 
 
 # Crear una Región:

@@ -33,9 +33,9 @@
       <ul class="navbar-nav">
         {% if user.is_authenticated %}
         <li class="nav-item">
-          <span class="nav-link text-light"
-            >Bienvenido, {{ user.first_name }}</span
-          >
+          <a class="nav-link" href="{% url 'profile' %}">
+            <p>Bienvenido <strong>{{ user.username }}</strong></p>
+          </a>
         </li>
         <li class="nav-item">
           <form action="{% url 'logout' %}" method="post">
@@ -72,7 +72,7 @@
               Ver Lista de Solicitudes
             </a>
           </li>
-          {% endif %}     
+          {% endif %}  
       </ul>
     </div>
   </div>

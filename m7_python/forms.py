@@ -1,10 +1,22 @@
 from django import forms
 from django.forms import ModelForm
 from m7_python.models import Contact, UserProfile
-# from django.contrib.auth.models import User
-# from .models import Profile
-# from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
+
+
+
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(required=True, help_text='Requerido. Ingrese una dirección de correo electrónico válida.')
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Este correo electrónico ya está en uso.")
+        return email
 
 class ContactModelForm(ModelForm):
     class Meta:
@@ -44,15 +56,15 @@ class UserProfileForm(forms.ModelForm):
         fields = ['rut', 'direccion', 'telefono', 'tipo']
 
 #TODO_ EDIT PROFILE -FORM
-#* -> UserProfileForm - este form nos va a servir además para cuando vayamos a editar el perfil
-# class UserForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ['first_name', 'last_name', 'email']
-# class UserEditProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = UserProfile
-#         fields = ['rut', 'direccion', 'telefono']
+# UserProfileForm - este form nos va a servir además para cuando vayamos a editar el perfil
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+class UserEditProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['rut', 'direccion', 'telefono']
 
 # #*  --- apply ContactFormForm --- 
 
