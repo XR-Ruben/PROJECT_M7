@@ -64,7 +64,7 @@ class UserForm(forms.ModelForm):
 class UserEditProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['rut', 'direccion', 'telefono']
+        fields = ['rut', 'direccion', 'telefono', 'tipo']
 
 # #*  --- apply ContactFormForm --- 
 

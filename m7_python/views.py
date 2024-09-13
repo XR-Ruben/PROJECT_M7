@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .services import get_all_inmuebles, get_or_create_user_profile
+from .services import get_all_inmuebles, get_or_create_user_profile, get_inmuebles_for_arrendador
 from django.contrib import messages
 from django.views import View
 from m7_python.services import create_user
@@ -10,9 +10,38 @@ from django.contrib.auth import login
 from .models import UserProfile
 
 # Create your views here.
+# def indexView(request):
+#     inmuebles = get_all_inmuebles()
+#     return render(request,'index.html',{'inmuebles':inmuebles} )
+
+
+
+@login_required
 def indexView(request):
+    if request.user.is_authenticated:
+        profile = get_or_create_user_profile(request.user)
+        if profile.tipo == 'arrendador':
+            messages.success(request, 'Bienvenido a --> Arriendos.Com!!!')
+            return redirect('dashboard_arrendador')
+        elif profile.tipo == 'arrendatario':
+            return redirect('index_arrendatario')
+        else: 
+            return redirect('login')
+        # inmuebles = get_all_inmuebles()
+        # return render(request,'index.html',{'inmuebles':inmuebles} )
+    else:
+        return redirect('login')
+    
+    
+@login_required   
+def index_arrendatario(request):
     inmuebles = get_all_inmuebles()
-    return render(request,'index.html',{'inmuebles':inmuebles} )
+    return render(request,'arrendatario/index_arrendatario.html',{'inmuebles':inmuebles} )
+
+@login_required 
+def dashboard_arrendador(request):
+    inmuebles = get_inmuebles_for_arrendador(request.user)
+    return render(request, 'arrendador/dashboard_arrendador.html', {'inmuebles': inmuebles})    
 
 
 
@@ -133,3 +162,4 @@ def edit_profile_view(request):
 
 def about(request):
     return render(request, 'about.html', {})
+

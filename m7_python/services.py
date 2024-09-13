@@ -178,20 +178,29 @@ def eliminar_inmueble(id_inmueble):
         }
         
 
-    
+def get_inmuebles_for_arrendador(user):
+    rol = user.user_profile.tipo
+    if rol != 'arrendador':
+        print(f'no es arrendador')
+        return [] 
+    inmuebles = Inmueble.objects.filter(arrendador=user)
+    if not inmuebles.exists():
+        print(f'no hay inmuebles')
+        return []
+    return inmuebles    
             
         
 
-# # Crear una Solicitud:
+# Crear una Solicitud:
 
-# inmueble = Inmueble.objects.get(id=1)
-# arrendatario = User.objects.get(username='pedro')
+inmueble = Inmueble.objects.get(id=1)
+arrendatario = User.objects.get(username='pedro')
 
-# solicitud = Solicitud.objects.create(
-# inmueble=inmueble,
-# arrendatario=arrendatario,
-# estado='pendiente'
-# )
+solicitud = Solicitud.objects.create(
+inmueble=inmueble,
+arrendatario=arrendatario,
+estado='pendiente'
+)
 
 # nuevo_inmueble = Inmueble(
 #     nombre="Casa en el centro",
