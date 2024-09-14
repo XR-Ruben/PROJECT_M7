@@ -193,14 +193,14 @@ def get_inmuebles_for_arrendador(user):
 
 # Crear una Solicitud:
 
-inmueble = Inmueble.objects.get(id=1)
-arrendatario = User.objects.get(username='pedro')
+# inmueble = Inmueble.objects.get(id=1)
+# arrendatario = User.objects.get(username='pedro')
 
-solicitud = Solicitud.objects.create(
-inmueble=inmueble,
-arrendatario=arrendatario,
-estado='pendiente'
-)
+# solicitud = Solicitud.objects.create(
+# inmueble=inmueble,
+# arrendatario=arrendatario,
+# estado='pendiente'
+# )
 
 # nuevo_inmueble = Inmueble(
 #     nombre="Casa en el centro",

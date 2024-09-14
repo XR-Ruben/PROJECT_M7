@@ -119,7 +119,7 @@ def register_rol(request):
         form = UserProfileForm(request.POST, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('inicio')  # Redirige a la página de inicio o cualquier otra página
+            return redirect('index')  # Redirige a la página de inicio o cualquier otra página
     else:
         form = UserProfileForm(instance=user_profile)
     return render(request, 'registration/register_rol.html', {'form': form})    
