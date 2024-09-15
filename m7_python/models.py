@@ -57,7 +57,17 @@ class Solicitud(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     estado = models.CharField(max_length=50, choices=ESTADOS, default='pendiente')
     
+  
+  
+  
+# MODEL CONTACTO
+class ContactForm(models.Model):
+    customer_email = models.EmailField()
+    customer_name = models.CharField(max_length=64)
+    message = models.TextField()
     
+    def __str__(self):
+        return self.customer_name    
 class Contact(models.Model):
 	nombre = models.CharField(max_length=100)
 	email = models.CharField(max_length=100)

@@ -61,7 +61,7 @@
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           {% if user.is_authenticated and user.user_profile.tipo == 'arrendador' %}
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{% url 'create_inmueble' %}">
               Crear Inmueble
             </a>
           </li>

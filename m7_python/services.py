@@ -66,6 +66,13 @@ def create_comuna(cod, nombre, region_cod):
     comuna = Comuna.objects.create(cod=cod, nombre=nombre, region= region)
     return comuna
 
+
+def create_inmueble_for_arrendador(user, data):
+    new_inmueble = Inmueble(**data)
+    new_inmueble.arrendador = user 
+    new_inmueble.save()
+    return new_inmueble
+
 # # # Crear un Inmueble:
 def insertar_inmueble(data):
     """

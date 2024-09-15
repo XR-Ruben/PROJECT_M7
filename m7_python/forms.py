@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from m7_python.models import Contact, UserProfile
+from m7_python.models import ContactForm, UserProfile, Inmueble, Contact
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -66,44 +66,15 @@ class UserEditProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['rut', 'direccion', 'telefono', 'tipo']
 
-# #*  --- apply ContactFormForm --- 
 
-# class ContactFormForm(forms.Form):
-#     customer_email = forms.EmailField(label='Correo')
-#     customer_name = forms.CharField(max_length=64, label='Nombre')
-#     message = forms.CharField(label='Mensaje')
 
-# #*  --- apply ContactModelForm ---
-
-# class ContactModelForm(forms.ModelForm):
-#     class Meta:
-#         model = ContactForm
-#         fields = ['customer_email', 'customer_name', 'message']
-        
-        
-# #* PROFILE FORMS 
-# class ProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ['bio', 'location', 'birth_date']
-
-# class UserForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ['first_name', 'last_name', 'email']   
-        
-        
-# #* REGISTER FORMS  
-
-# class CustomUserCreationForm(UserCreationForm):
-#     email = forms.EmailField(required=True, help_text='Requerido. Ingrese una dirección de correo electrónico válida.')
-
-#     class Meta:
-#         model = User
-#         fields = ('username', 'email', 'password1', 'password2')
-
-#     def clean_email(self):
-#         email = self.cleaned_data.get('email')
-#         if User.objects.filter(email=email).exists():
-#             raise forms.ValidationError("Este correo electrónico ya está en uso.")
-#         return email      
+#TODO__ FORM INMUEBLE - CREAR 
+class InmuebleForm(forms.ModelForm):
+    class Meta: 
+        model = Inmueble
+        fields = [
+            'nombre', 'descripcion', 'm2_construidos', 'm2_totales',
+            'num_estacionamientos', 'num_habitaciones', 'num_baños',
+            'direccion', 'tipo_inmueble', 'precio', 'disponible',
+            'comuna'
+        ]  

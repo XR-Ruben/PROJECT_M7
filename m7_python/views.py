@@ -1,18 +1,18 @@
-from django.shortcuts import render, redirect
-from .services import get_all_inmuebles, get_or_create_user_profile, get_inmuebles_for_arrendador
+from django.shortcuts import render, redirect, get_object_or_404
+from .services import get_all_inmuebles, get_or_create_user_profile, create_inmueble_for_arrendador,  get_inmuebles_for_arrendador
 from django.contrib import messages
 from django.views import View
 from m7_python.services import create_user
-from m7_python.forms import ContactModelForm, CustomUserCreationForm, UserEditProfileForm, UserForm, UserProfileForm
+from m7_python.forms import ContactModelForm, CustomUserCreationForm, UserEditProfileForm, UserForm, UserProfileForm, InmuebleForm
+from .models import UserProfile, Contact, Inmueble
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
-from .models import UserProfile
+from .decorators import rol_requerido
 
-# Create your views here.
-# def indexView(request):
-#     inmuebles = get_all_inmuebles()
-#     return render(request,'index.html',{'inmuebles':inmuebles} )
+#* Route para manejo de NOT_AUTH
+def not_authorized_view(request):
+    return render(request, "not_authorized.html", {})
 
 
 
@@ -163,3 +163,34 @@ def edit_profile_view(request):
 def about(request):
     return render(request, 'about.html', {})
 
+
+
+#TODO__ ARRENDADOR - VIEWS
+
+#* HITO 4
+
+@login_required
+@rol_requerido('arrendador')
+def create_inmueble(request):
+    if request.method == 'POST':
+        form = InmuebleForm(request.POST)
+        if form.is_valid():
+            inmueble = create_inmueble_for_arrendador(request.user, form.cleaned_data)
+            return redirect('dashboard_arrendador')
+    else: 
+        form = InmuebleForm()
+    return render(request, 'arrendador/create_inmueble.html', {'form': form})
+
+@login_required
+def edit_inmueble(request, inmueble_id):
+    inmueble_edit =  get_object_or_404(Inmueble, id=inmueble_id)
+    # inmueble_edit =  Inmueble.objects.get(pk=inmueble_id)
+    if request.method == 'POST':
+        form = InmuebleForm(request.POST, instance=inmueble_edit)
+        if form.is_valid():
+            #* Crear service para update Inmueble y validar
+            form.save()
+            return redirect('dashboard_arrendador')
+    else: 
+        form = InmuebleForm(instance=inmueble_edit)
+    return render(request, 'arrendador/edit_inmueble.html', {'form': form})
