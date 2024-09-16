@@ -10,7 +10,7 @@
       </div>
       {% endif %} {% if inmuebles %} {% for i in inmuebles %}
       <div class="col-md-4 mb-4">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{% url 'detail_inmueble' inmueble_id=i.id %}">
           <div class="card">
             <img
               src="https://definicion.de/wp-content/uploads/2010/12/casa.jpg"

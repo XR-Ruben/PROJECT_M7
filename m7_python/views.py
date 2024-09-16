@@ -194,3 +194,20 @@ def edit_inmueble(request, inmueble_id):
     else: 
         form = InmuebleForm(instance=inmueble_edit)
     return render(request, 'arrendador/edit_inmueble.html', {'form': form})
+
+
+@login_required
+def detail_inmueble(request, inmueble_id):
+    inmueble = get_object_or_404(Inmueble, id=inmueble_id)
+    # inmueble =  Inmueble.objects.get(id=inmueble_id)
+    return render(request, 'detail_inmueble.html', {'inmueble': inmueble})
+
+
+@login_required
+def delete_inmueble(request, inmueble_id):
+    inmueble = get_object_or_404(Inmueble, id=inmueble_id)
+    if request.method == 'POST':
+        inmueble.delete()
+        return redirect('dashboard_arrendador')
+
+    return render(request, 'arrendador/delete_inmueble.html', {'inmueble': inmueble})
