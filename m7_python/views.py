@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .services import get_all_inmuebles, get_or_create_user_profile, create_inmueble_for_arrendador,  get_inmuebles_for_arrendador
+from .services import get_all_inmuebles, get_or_create_user_profile, create_inmueble_for_arrendador,  get_inmuebles_for_arrendador, actualizar_disponibilidad_inmueble
 from django.contrib import messages
 from django.views import View
 from m7_python.services import create_user
-from m7_python.forms import ContactModelForm, CustomUserCreationForm, UserEditProfileForm, UserForm, UserProfileForm, InmuebleForm
+from m7_python.forms import ContactModelForm, CustomUserCreationForm, UserEditProfileForm, UserForm, UserProfileForm, InmuebleForm, EditDisponibilidadForm
 from .models import UserProfile, Contact, Inmueble
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
@@ -145,10 +145,14 @@ def profile_view(request):
 def edit_profile_view(request):
     user = request.user 
     user_profile = get_or_create_user_profile(user)
+    tipo=user_profile.tipo
     if request.method == 'POST':
+        print("hola estoy adentro")
         user_form = UserForm(request.POST, instance=user)
         profile_form = UserEditProfileForm(request.POST, instance=user_profile) 
+        # profile_form.tipo=tipo
         if user_form.is_valid() and profile_form.is_valid():
+            print("hola estoy adentro de la validacion del formulario")
             user_form.save()
             profile_form.save()
             return redirect('profile')
@@ -158,6 +162,7 @@ def edit_profile_view(request):
     return render(request, 'profile_edit.html', {
         'user_form': user_form,
         'profile_form': profile_form,
+        'tipo':tipo
     })
 
 def about(request):
@@ -211,3 +216,23 @@ def delete_inmueble(request, inmueble_id):
         return redirect('dashboard_arrendador')
 
     return render(request, 'arrendador/delete_inmueble.html', {'inmueble': inmueble})
+
+
+
+@login_required
+def edit_disponibilidad_inmueble(request, inmueble_id):
+    inmueble = get_object_or_404(Inmueble, id=inmueble_id)
+    if request.method == 'POST':
+        form = EditDisponibilidadForm(request.POST, instance=inmueble) 
+        if form.is_valid():
+            disponible = form.cleaned_data['disponible']
+            result = actualizar_disponibilidad_inmueble(inmueble_id, disponible)
+            if result["success"]:
+                messages.success(request, result["message"])
+            else: 
+                messages.error(request, result["message"])
+            return redirect('dashboard_arrendador')
+             
+    else: 
+        form = EditDisponibilidadForm(instance=inmueble)
+    return render(request, 'arrendador/edit_disponibilidad.html', {'form': form, 'inmueble': inmueble})

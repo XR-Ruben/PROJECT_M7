@@ -65,6 +65,7 @@ class UserEditProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['rut', 'direccion', 'telefono', 'tipo']
+        # fields = ['rut', 'direccion', 'telefono'] --> quitar tipo para solucionar problema de guardar edicion de tipo de usuario
 
 
 
@@ -78,3 +79,16 @@ class InmuebleForm(forms.ModelForm):
             'direccion', 'tipo_inmueble', 'precio', 'disponible',
             'comuna'
         ]  
+        
+        
+        
+#TODO__ FORM DISPONIBILIDAD  
+
+class EditDisponibilidadForm(forms.ModelForm):
+    class Meta:
+        model = Inmueble
+        fields = ['disponible']  # Solo permitimos modificar la disponibilidad
+        widgets = {
+            'disponible': forms.CheckboxInput(),  # Input como checkbox (disponible o no)
+        }
+        

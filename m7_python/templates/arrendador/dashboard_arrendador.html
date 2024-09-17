@@ -12,13 +12,11 @@
       {% endif %} {% if inmuebles %} {% for i in inmuebles %}
       <div class="col-md-4 mb-4">
         {% if i.disponible %}
-        <div
-          class="position-relative top-0 start-0 p-2 bg-secondary text-white"
-        >
+        <div class="position-relative top-0 start-0 p-2 bg-success text-white">
           Disponible
         </div>
         {% else %}
-        <div class="position-relative top-0 start-0 p-2 bg-success text-white">
+        <div class="position-relative top-0 start-0 p-2 bg-danger text-white">
           No Disponible
         </div>
         {% endif %}

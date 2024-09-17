@@ -121,8 +121,13 @@ def insertar_inmueble(data):
     return inmueble
 
 def get_all_inmuebles():
-    inmuebles = Inmueble.objects.all()
-    return inmuebles
+    # inmuebles = Inmueble.objects.all()
+    try: 
+        inmuebles = Inmueble.objects.filter(disponible=True) 
+        return inmuebles 
+    except Exception as e: 
+        print(f"Error al obtener los inmuebles: {str(e)}")
+        return []
 
 
 def actualizar_disponibilidad_inmueble(id_inmueble, disponible):

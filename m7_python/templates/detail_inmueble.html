@@ -62,14 +62,15 @@
         </p>
       </div>
 
-      <!-- {% if user.is_authenticated and user.user_profile.rol == 'arrendador' %}
-            <a href="#" class="btn btn-warning my-2">
-                Cambiar Disponibilidad
-            </a>
-            <a href="#" class="btn btn-primary my-2">
-                Ver Solicitudes
-            </a>
-            {% endif %}
+      {% if user.is_authenticated and user.user_profile.tipo == 'arrendador' %}
+      <a
+        href="{% url 'edit_disponibilidad_inmueble' inmueble_id=inmueble.id %}"
+        class="btn btn-secondary my-2"
+      >
+        Cambiar Disponibilidad
+      </a>
+      <a href="#" class="btn btn-secondary my-2"> Ver Solicitudes </a>
+      <!-- {% endif %}
             {% if user.is_authenticated and user.user_profile.rol == 'arrendatario' %}
             <p>Hola soy arrendatario</p>
             {% endif %} -->
