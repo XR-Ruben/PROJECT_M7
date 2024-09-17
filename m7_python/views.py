@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.views import View
 from m7_python.services import create_user
 from m7_python.forms import ContactModelForm, CustomUserCreationForm, UserEditProfileForm, UserForm, UserProfileForm, InmuebleForm, EditDisponibilidadForm
-from .models import UserProfile, Contact, Inmueble
+from .models import UserProfile, Contact, Inmueble, Solicitud, User
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -236,3 +236,31 @@ def edit_disponibilidad_inmueble(request, inmueble_id):
     else: 
         form = EditDisponibilidadForm(instance=inmueble)
     return render(request, 'arrendador/edit_disponibilidad.html', {'form': form, 'inmueble': inmueble})
+
+
+
+#TODO__ ARRENDATARIOS - VIEWS
+
+
+@login_required
+@rol_requerido('arrendatario')
+def send_solicitud(request, inmueble_id):
+    inmueble = get_object_or_404(Inmueble, id=inmueble_id)
+    if request.method == 'POST':
+        solicitud = Solicitud(arrendatario= request.user, inmueble= inmueble, estado= 'pendiente')
+        solicitud.save()
+        messages.success(request, f'Solicitud inmueble {inmueble.nombre} realizada con éxito!!!')
+        return redirect('index_arrendatario')
+    return render(request, 'arrendatario/send_solicitud.html', {'inmueble': inmueble})
+    
+    
+
+
+def view_list_user_solicitudes(request):
+    
+    arrendatario =  get_object_or_404(User, id=request.user.id)
+    solicitudes = Solicitud.objects.filter(arrendatario=arrendatario)
+    return render(request, 'arrendatario/list_user_solicitudes.html', {
+        'solicitudes': solicitudes,
+        'arrendatario': arrendatario
+    })

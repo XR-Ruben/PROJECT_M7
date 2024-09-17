@@ -68,7 +68,7 @@
           {% endif %}
           {% if user.is_authenticated and user.user_profile.tipo == 'arrendatario' %}
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{% url 'solicitudes' %}">
               Ver Lista de Solicitudes
             </a>
           </li>
