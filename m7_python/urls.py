@@ -2,7 +2,9 @@ from django.urls import path
 from .views import (indexView, RegisterView, ContactView, register_rol, 
                     profile_view, about, edit_profile_view, index_arrendatario, 
                     dashboard_arrendador, not_authorized_view, create_inmueble, 
-                    edit_inmueble, detail_inmueble, delete_inmueble, edit_disponibilidad_inmueble, send_solicitud, view_list_user_solicitudes)
+                    edit_inmueble, detail_inmueble, delete_inmueble, 
+                    edit_disponibilidad_inmueble, send_solicitud, view_list_user_solicitudes, view_list_solicitudes,
+                    edit_status_solicitud)
 
 urlpatterns = [
     path('', indexView, name='index'),
@@ -27,6 +29,8 @@ urlpatterns = [
     path('dashboard/detail/<int:inmueble_id>/', detail_inmueble, name="detail_inmueble"),
     path('dashboard/inmueble/delete/<int:inmueble_id>/',delete_inmueble, name='delete_inmueble'),
     path('dashboard/inmueble/disponibilidad/<int:inmueble_id>/', edit_disponibilidad_inmueble, name='edit_disponibilidad_inmueble'),
+    path('dashboard/inmueble/solicitudes/<int:inmueble_id>/', view_list_solicitudes, name='view_list_solicitudes'),
+    path('dashboard/solicitud/edit-status/<int:solicitud_id>/', edit_status_solicitud, name='edit_status_solicitud')
     
     
 ]

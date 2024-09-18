@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from m7_python.models import ContactForm, UserProfile, Inmueble, Contact
+from m7_python.models import ContactForm, UserProfile, Inmueble, Contact, Solicitud
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -92,3 +92,12 @@ class EditDisponibilidadForm(forms.ModelForm):
             'disponible': forms.CheckboxInput(),  # Input como checkbox (disponible o no)
         }
         
+        
+#TODO__ FORM SOLICITUDES 
+class UpdateSolicitudEstadoForm(forms.ModelForm):
+    class Meta:
+        model = Solicitud
+        fields = ['estado']
+        widgets = {
+            'estado': forms.Select(choices=Solicitud.ESTADOS)  # ChoiseField basado en el modelo
+        }         

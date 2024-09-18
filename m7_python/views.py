@@ -3,7 +3,8 @@ from .services import get_all_inmuebles, get_or_create_user_profile, create_inmu
 from django.contrib import messages
 from django.views import View
 from m7_python.services import create_user
-from m7_python.forms import ContactModelForm, CustomUserCreationForm, UserEditProfileForm, UserForm, UserProfileForm, InmuebleForm, EditDisponibilidadForm
+from m7_python.forms import (ContactModelForm, CustomUserCreationForm, UserEditProfileForm, 
+                            UserForm, UserProfileForm, InmuebleForm, EditDisponibilidadForm, UpdateSolicitudEstadoForm)
 from .models import UserProfile, Contact, Inmueble, Solicitud, User
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
@@ -264,3 +265,30 @@ def view_list_user_solicitudes(request):
         'solicitudes': solicitudes,
         'arrendatario': arrendatario
     })
+    
+    
+    
+#* del ARRENDADOR
+@login_required
+def view_list_solicitudes(request, inmueble_id):
+    # Obtenemos inmueble para validar previamente
+    inmueble = get_object_or_404(Inmueble, id=inmueble_id) 
+    solicitudes = Solicitud.objects.filter(inmueble_id=inmueble_id)
+    return render(request, 'arrendador/list_solicitudes.html', {'inmueble':inmueble, 'solicitudes': solicitudes})
+
+
+
+
+
+@login_required
+def edit_status_solicitud(request, solicitud_id):
+    solicitud = get_object_or_404(Solicitud, id=solicitud_id) 
+    if request.method == 'POST':
+        form = UpdateSolicitudEstadoForm(request.POST, instance=solicitud)
+        if form.is_valid():
+            form.save()
+            print(f'--> {form.cleaned_data['estado']}')
+            return redirect('view_list_solicitudes', inmueble_id=solicitud.inmueble.id)
+    else:
+        form = UpdateSolicitudEstadoForm(instance=solicitud)
+    return render(request, 'arrendador/edit_status_solicitud.html', {'form': form, 'solicitud': solicitud})    

@@ -21,30 +21,30 @@
                 - Comuna: <strong>{{ inmueble.comuna.nombre }}</strong></p>
             <div class="mt-auto">
                 <!-- Aquí puedes mostrar precios en formato deseado -->
-                <p class="fs-4 flex-grow-1 my-0" style="background-color:rgb(210, 224, 243);">$ {{ inmueble.precio }}</p>
-                <p class="fs-4 fw-bold my-0" style="background-color:rgb(210, 224, 243);">Estacionamiento/s {{ inmueble.num_estacionamientos }}</p>
-                <p class="fs-4 fw-bold my-0" style="background-color:rgb(210, 224, 243);">Habitaciones {{ inmueble.num_habitaciones }}</p>
-                <p class="fs-4 fw-bold my-0" style="background-color:rgb(210, 224, 243);">Baños {{ inmueble.num_baños }}</p>
-                <p class="fs-4 fw-bold my-0" style="background-color:rgb(210, 224, 243);">Dirección: {{ inmueble.direccion }}</p>
-                <p class="fs-4 fw-bold my-0" style="background-color:rgb(210, 224, 243);">Tipo {{ inmueble.get_tipo_inmueble_display }}</p>
+                <p class="fs-4 flex-grow-1 my-0" style="background-color: rosybrown;">$ {{ inmueble.precio }}</p>
+                <p class="fs-4 fw-bold my-0" style="background-color:rosybrown;">Estacionamiento/s {{ inmueble.num_estacionamientos }}</p>
+                <p class="fs-4 fw-bold my-0" style="background-color: rosybrown;">Habitaciones {{ inmueble.num_habitaciones }}</p>
+                <p class="fs-4 fw-bold my-0" style="background-color: rosybrown;">Baños {{ inmueble.num_baños }}</p>
+                <p class="fs-4 fw-bold my-0" style="background-color: rosybrown;">Dirección: {{ inmueble.direccion }}</p>
+                <p class="fs-4 fw-bold my-0" style="background-color: rosybrown;">Tipo {{ inmueble.get_tipo_inmueble_display }}</p>
             </div>
 
             {% if user.is_authenticated and user.user_profile.tipo == 'arrendador' %}
-            <a href="{% url 'edit_disponibilidad_inmueble' inmueble_id=inmueble.id %}" class="btn btn-warning my-2">
+            <a href="{% url 'edit_disponibilidad_inmueble' inmueble_id=inmueble.id %}" class="btn btn-secondary my-2">
                 Cambiar Disponibilidad
             </a>
-            <a href="#" class="btn btn-primary my-2">
+            <a href="{% url 'view_list_solicitudes' inmueble_id=inmueble.id %}" class="btn btn-secondary my-2">
                 Ver Solicitudes
             </a>
                  
             
             {% endif %}
             {% if user.is_authenticated and user.user_profile.tipo == 'arrendatario' %}
-            <p>Hola soy arrendatario</p>
+            <!-- <p>Hola soy arrendatario</p> -->
             <a href="{% url 'send_solicitud' inmueble_id=inmueble.id %}" class="btn btn-warning my-2">Solicitar</a>
             {% endif %}
         </div>
     </div>
-    <a href="{% url 'index' %}" class="w-25 btn btn-secondary py-2 fw-bold mt-2"><i class="fa-solid fa-house"></i> Volver a Inicio</a>
+    <a href="{% url 'index' %}" class="w-25 btn btn-dark py-2 fw-bold mt-2"><i class="fa-solid fa-house"></i> Volver a Inicio</a>
 </div>
 {% endblock %}
