@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .services import get_all_inmuebles, get_or_create_user_profile, create_inmueble_for_arrendador,  get_inmuebles_for_arrendador, actualizar_disponibilidad_inmueble
+from .services import (get_all_inmuebles, get_or_create_user_profile, create_inmueble_for_arrendador,  
+                       get_inmuebles_for_arrendador, actualizar_disponibilidad_inmueble)
 from django.contrib import messages
 from django.views import View
 from m7_python.services import create_user
 from m7_python.forms import (ContactModelForm, CustomUserCreationForm, UserEditProfileForm, 
                             UserForm, UserProfileForm, InmuebleForm, EditDisponibilidadForm, UpdateSolicitudEstadoForm)
-from .models import UserProfile, Contact, Inmueble, Solicitud, User
+from .models import UserProfile, Contact, Inmueble, Solicitud, User, Region, Comuna
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -34,10 +35,46 @@ def indexView(request):
         return redirect('login')
     
     
+    
+    
+def filtros_combinados(inmuebles, region='todas', comuna='todas'):
+    if region != 'todas':
+        inmuebles = inmuebles.filter(comuna__region__nombre=region)
+    if comuna != 'todas':
+        inmuebles = inmuebles.filter(comuna__nombre=comuna)
+    return inmuebles     
+    
+    
 @login_required   
 def index_arrendatario(request):
     inmuebles = get_all_inmuebles()
-    return render(request,'arrendatario/index_arrendatario.html',{'inmuebles':inmuebles} )
+       #* Manejo de si el Inmueble ha sido solicitado o no por el arrendatario
+    #* Agregamos al inmueble una nueva prop solicitudes_filtradas
+    user = request.user
+    for inmueble in inmuebles:
+        # Obtener las solicitudes del inmueble que pertenezcan al usuario actual
+        inmueble.solicitudes_filtradas = inmueble.solicitudes.filter(arrendatario=user,estado__in=['pendiente', 'aprobada'])
+    #*--------------------------------------------------------------------
+    
+    
+    # inmuebles = filtros_combinados(inmuebles, 'De Valparaíso')
+    # inmuebles = filtros_combinados(inmuebles, 'De Valparaíso')
+    comunas = Comuna.objects.all().order_by('nombre')
+    regiones = Region.objects.all().order_by('nombre')
+    
+    comuna = request.GET.get('comuna', 'todas')
+    region = request.GET.get('region', 'todas')
+    print(f'-comuna-> {comuna}')
+    print(f'-region-> {region}')
+    
+    
+    # if region == 'todas':
+    #     comuna = 'todas'
+        
+    inmuebles = filtros_combinados(inmuebles, region, comuna)
+    
+    
+    return render(request,'arrendatario/index_arrendatario.html',{'inmuebles':inmuebles, 'comunas':comunas, 'selected_comuna': comuna, 'regiones':regiones, 'selected_region': region} )
 
 @login_required 
 def dashboard_arrendador(request):
@@ -168,6 +205,9 @@ def edit_profile_view(request):
 
 def about(request):
     return render(request, 'about.html', {})
+
+def welcome(request):
+    return render(request, 'welcome.html', {})
 
 
 

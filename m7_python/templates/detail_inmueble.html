@@ -40,8 +40,13 @@
             
             {% endif %}
             {% if user.is_authenticated and user.user_profile.tipo == 'arrendatario' %}
-            <!-- <p>Hola soy arrendatario</p> -->
-            <a href="{% url 'send_solicitud' inmueble_id=inmueble.id %}" class="btn btn-warning my-2">Solicitar</a>
+                {% if inmueble.solicitudes_filtradas.exists %}
+                    <div class="card-footer bg-success text-white text-center">
+                        <p class="mb-0">Ya solicitado</p>
+                    </div>
+                {% else %}
+                    <a href="{% url 'send_solicitud' inmueble_id=inmueble.id %}" class="btn btn-warning my-2">Solicitar</a>
+                {% endif %}
             {% endif %}
         </div>
     </div>

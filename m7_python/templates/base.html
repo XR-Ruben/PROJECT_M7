@@ -26,6 +26,12 @@
       {% block navbar %} {% include 'navbar.html' %} {% endblock %}
     </header>
 
+  {% if user.is_authenticated and user.user_profile.tipo == 'arrendatario' and request.path == '/index' %}
+    {% block filtros %}
+    {% include 'filtros/nav_filtros.html' %}
+    {% endblock %}
+    {% endif %}
+
     {% block message%} {% if messages %} {% for message in messages %}
     <div class="row">
       <div class="col">

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (indexView, RegisterView, ContactView, register_rol, 
+from .views import (indexView, RegisterView, ContactView, register_rol, welcome,
                     profile_view, about, edit_profile_view, index_arrendatario, 
                     dashboard_arrendador, not_authorized_view, create_inmueble, 
                     edit_inmueble, detail_inmueble, delete_inmueble, 
@@ -15,6 +15,7 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'),
     path('profile/edit/', edit_profile_view, name='edit_profile'),
     path('about/', about, name='about'),
+    path('welcome/index.html', welcome, name='welcome'),
         # TODO__ PATH (urls - ROUTES) - ARRENDATARIO
     path('index', index_arrendatario, name='index_arrendatario'),
     path('inmueble/solicitar/<int:inmueble_id>/', send_solicitud, name='send_solicitud'),
