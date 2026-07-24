@@ -32,7 +32,8 @@ db_password= os.environ.get('DB_PASSWORD')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['project-m7-vcng.onrender.com', 'localhost', '127.0.0.1']
+
 
 
 # Application definition
